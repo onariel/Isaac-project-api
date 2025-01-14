@@ -1,0 +1,15 @@
+#This is the docker compose, to setup the database, the command to do is: docker compose -f ./docker-compose up
+services:
+  database:
+    image: postgres:17-alpine
+    ports:
+      - 5432:5432
+
+    environment:
+      POSTGRES_USER: username # The PostgreSQL user (useful to connect to the database)
+      POSTGRES_PASSWORD: password # The PostgreSQL password (useful to connect to the database)
+      POSTGRES_DB: default_database # The PostgreSQL default database (automatically created at first launch)
+
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data
+
