@@ -15,8 +15,23 @@ public class EmployeController {
         return employeeService.getEmployeeById(id);
     }
 
-    @PostMapping // Endpoint pour créer un nouveau membre
+    @PostMapping("/create") // Endpoint pour créer un nouveau membre
     public long createEmployee(@RequestBody Employee employee) {
         return employeeService.createEmployee(employee.getName(), employee.getEmail(), employee.getRole(), employee.getPassword()).getId();
+    }
+
+    @PostMapping("/login")
+    public Employee login(@RequestBody RequestLogin login) {
+        Employee employee = employeeService.getEmployeeByEmail(login.getEmail());
+        if (employee != null && employee.getPassword().equals(login.getPassword())) {
+            Employee employeeWithoutPassword = new Employee();
+            employeeWithoutPassword.setId(employee.getId());
+            employeeWithoutPassword.setName(employee.getName());
+            employeeWithoutPassword.setEmail(employee.getEmail());
+            employeeWithoutPassword.setRole(employee.getRole());
+            return employeeWithoutPassword;
+        } else {
+            return null;
+        }
     }
 }

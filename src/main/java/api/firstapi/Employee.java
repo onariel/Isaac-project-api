@@ -1,9 +1,6 @@
 package api.firstapi;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +15,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incrémentation de l'ID
     private Long id;
     public String name;
+    @Column(unique = true)
     public String email;
     public String role;
     public String password;

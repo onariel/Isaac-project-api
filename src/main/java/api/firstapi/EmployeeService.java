@@ -13,6 +13,10 @@ public class EmployeeService {
         return employeeRepository.findById(id).orElse(null); // Retourne le membre correspondant à l'ID ou null
     }
 
+    public Employee getEmployeeByEmail(String email) {
+        return employeeRepository.findByEmail(email).orElse(null);
+    }
+
     public Employee createEmployee(String name, String email, String role, String password) {
         Employee employee = new Employee();
         employee.setName(name); // Définit le nom du membre
