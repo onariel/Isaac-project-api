@@ -20,7 +20,7 @@ public class TaskDTO {
 
     public Date dueDate;
 
-    public Boolean status;
+    public Long status;
 
     public float budget;
 }

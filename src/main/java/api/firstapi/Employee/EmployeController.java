@@ -25,11 +25,12 @@ public class EmployeController {
 
     @GetMapping("/byEmail")
     public ResponseEntity<EmployeeDTO> getEmployeeByEmail(@RequestParam String email) {
+        System.out.println(email);
         Employee employee = employeeService.getEmployeeByEmail(email);
         if (employee != null) {
             return ResponseEntity.ok(employeeService.toDTO(employee));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 if no employee found
+            return null;
         }
     }
 

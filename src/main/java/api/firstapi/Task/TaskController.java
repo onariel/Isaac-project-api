@@ -44,7 +44,7 @@ public class TaskController {
     }
 
     @GetMapping("/{id}/status")
-    public ResponseEntity<Boolean> getTaskStatus(@PathVariable Long id) {
+    public ResponseEntity<Long> getTaskStatus(@PathVariable Long id) {
         return taskService.getTaskById(id)
                 .map(task -> ResponseEntity.ok(task.getStatus()))
                 .orElse(ResponseEntity.notFound().build());
@@ -104,7 +104,7 @@ public class TaskController {
     }
 
     @PostMapping("/{id}/status")
-    public ResponseEntity<Boolean> setTaskStatus(@PathVariable Long id, @RequestBody Boolean status) {
+    public ResponseEntity<Long> setTaskStatus(@PathVariable Long id, @RequestBody Long status) {
         return taskService.getTaskById(id)
                 .map(task -> {
                     task.setStatus(status);

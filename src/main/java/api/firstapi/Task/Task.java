@@ -27,7 +27,7 @@ public class Task {
 
     public Date dueDate;
 
-    public Boolean status;
+    public long status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     public Project project;
