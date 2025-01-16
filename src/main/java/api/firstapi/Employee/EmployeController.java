@@ -1,7 +1,11 @@
-package api.firstapi;
+package api.firstapi.Employee;
 
+import api.firstapi.RequestLogin;
+import api.firstapi.Usefule_object;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController // Indique que cette classe est un contrôleur REST
 @RequestMapping("/Employee") // URL de base pour les endpoints de cette classe
@@ -11,7 +15,7 @@ public class EmployeController {
     private EmployeeService employeeService;
 
     @GetMapping("/{id}") // Endpoint pour récupérer un membre par ID
-    public Employee getEmployeeById(@PathVariable Long id) {
+    public EmployeeDTO getEmployeeById(@PathVariable Long id) {
         return employeeService.getEmployeeById(id);
     }
 
@@ -21,17 +25,7 @@ public class EmployeController {
     }
 
     @PostMapping("/login")
-    public Employee login(@RequestBody RequestLogin login) {
-        Employee employee = employeeService.getEmployeeByEmail(login.getEmail());
-        if (employee != null && employee.getPassword().equals(login.getPassword())) {
-            Employee employeeWithoutPassword = new Employee();
-            employeeWithoutPassword.setId(employee.getId());
-            employeeWithoutPassword.setName(employee.getName());
-            employeeWithoutPassword.setEmail(employee.getEmail());
-            employeeWithoutPassword.setRole(employee.getRole());
-            return employeeWithoutPassword;
-        } else {
-            return null;
-        }
+    public Long login(@RequestBody RequestLogin login) {
+        return employeeService.login(login);
     }
 }
