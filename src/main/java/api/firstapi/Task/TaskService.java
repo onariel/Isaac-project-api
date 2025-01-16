@@ -5,19 +5,23 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@Service // Indique que cette classe est un service Spring
+@Service
 public class TaskService {
 
-    @Autowired // Injection du repository
+    @Autowired
     private TaskRepository taskRepository;
 
-    public Task getTaskById(Long id) {
-       return taskRepository.findById(id).orElse(null);
+    public Optional<Task> getTaskById(Long id) {
+        return taskRepository.findById(id);
     }
 
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
+    }
+    public Task saveTask(Task task){
+        return taskRepository.save(task);
     }
 
     public TaskDTO toDTO(Task task) {
@@ -34,8 +38,10 @@ public class TaskService {
 
     public List<TaskDTO> toDTO(List<Task> tasks) {
         List<TaskDTO> taskDTOs = new ArrayList<>();
-        for (Task task : tasks) {
-            taskDTOs.add(toDTO(task));
+        if (tasks != null) {
+            for (Task task : tasks) {
+                taskDTOs.add(toDTO(task));
+            }
         }
         return taskDTOs;
     }

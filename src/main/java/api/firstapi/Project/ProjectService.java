@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service // Indique que cette classe est un service Spring
+@Service
 public class ProjectService {
 
-    @Autowired // Injection du repository
+    @Autowired
     private ProjectRepository projectRepository;
 
     @Autowired
@@ -25,21 +25,24 @@ public class ProjectService {
     @Autowired
     private TaskService taskService;
 
-    public ProjectDTO getProjectById(Long id) {
-        Optional<Project> project = projectRepository.findById(id);
-        return project.map(this::toProjectDTO).orElse(null);
+
+    public Optional<Project> getProjectById(Long id) {
+        return projectRepository.findById(id);
+    }
+
+    public Project saveProject(Project project){
+        return projectRepository.save(project);
     }
 
 
-
-    public ProjectDTO createProject(CreateProjectDTO projectDTO) {
+    public ProjectDTO createProject(ProjectDTO projectDTO) {
         Project project = new Project();
         project.setName(projectDTO.getName());
         project.setDescription(projectDTO.getDescription());
         project.setStartDate(projectDTO.getStartDate());
         project.setEndDate(projectDTO.getEndDate());
         project.setStatus(false);
-        project.setProjectManager(employeeRepository.findById(projectDTO.getProjectManagerId()).orElse(null));
+        project.setProjectManager(employeeRepository.findById(projectDTO.getProjectManager().getId()).orElse(null));
         project.setBudget(projectDTO.getBudget());
 
         return toProjectDTO(projectRepository.save(project));

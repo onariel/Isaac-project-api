@@ -6,16 +6,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
 
-    @Autowired // Injection du repository
+    @Autowired
     private EmployeeRepository employeeRepository;
 
 
-    public EmployeeDTO getEmployeeById(Long id) {
-        return toDTO(employeeRepository.findById(id).orElse(null)); // Retourne le membre correspondant à l'ID ou null
+    public Optional<Employee> getEmployeeById(Long id) {
+        return employeeRepository.findById(id);
     }
 
     public Employee getEmployeeByEmail(String email) {
@@ -28,11 +29,11 @@ public class EmployeeService {
 
     public Employee createEmployee(String name, String email, String role, String password) {
         Employee employee = new Employee();
-        employee.setName(name); // Définit le nom du membre
+        employee.setName(name);
         employee.setEmail(email);
         employee.setRole(role);
         employee.setPassword(password);
-        return employeeRepository.save(employee); // Sauvegarde le membre dans la base
+        return employeeRepository.save(employee);
     }
 
     public Long login(RequestLogin requestLogin) {
@@ -44,8 +45,12 @@ public class EmployeeService {
             return employee.getId();
         }
         return null;
-
     }
+
+    public Employee saveEmployee(Employee employee){
+        return employeeRepository.save(employee);
+    }
+
 
     public EmployeeDTO toDTO(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
@@ -58,10 +63,12 @@ public class EmployeeService {
 
     public List<EmployeeDTO> toDTO(List<Employee> employeeList){
         List<EmployeeDTO> employeeDTOList = new ArrayList<>();
-        for (Employee employee : employeeList) {
-        employeeDTOList.add(toDTO(employee));
+        if(employeeList != null) {
+            for (Employee employee : employeeList) {
+                employeeDTOList.add(toDTO(employee));
+            }
         }
         return employeeDTOList;
     }
 
-    }
+}
