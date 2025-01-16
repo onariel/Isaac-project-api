@@ -7,7 +7,7 @@ spring:
       ddl-auto: update
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/default_database
+    url: jdbc:postgresql://localhost:5432/Isaac-database
     username: username
     password: password
 server:

@@ -2,11 +2,8 @@ package api.firstapi.Project;
 
 import api.firstapi.Employee.Employee;
 import api.firstapi.Task.Task;
-import api.firstapi.Usefule_object;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,8 +11,6 @@ import java.util.List;
 
 @Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 public class Project {
 
     @Id // Clé primaire
@@ -42,4 +37,21 @@ public class Project {
     public List<Task> tasks;
 
     public float budget;
+
+    public Project(int id, String name, String description, Date startDate, Date endDate, Boolean status, Employee projectManager, List<Employee> linkedEmployees, List<Task> tasks, float budget) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.projectManager = projectManager;
+        this.linkedEmployees = linkedEmployees;
+        this.tasks = tasks;
+        this.budget = budget;
+    }
+
+    public Project() {
+        this.linkedEmployees = new ArrayList<>();
+    }
 }

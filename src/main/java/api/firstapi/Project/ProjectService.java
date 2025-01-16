@@ -40,7 +40,7 @@ public class ProjectService {
 
     public boolean addEmployee(long id, String email){
         Project project = projectRepository.findById(id).orElse(null);
-        Employee employee = employeeRepository.findByEmail(email).orElse(null);
+        Employee employee = employeeService.getEmployeeByEmail(email);
         if(employee != null) {
             project.getLinkedEmployees().add(employee);
             employee.getProjects().add(project);
@@ -69,8 +69,10 @@ public class ProjectService {
         project.setEndDate(projectDTO.getEndDate());
         project.setStatus(false);
         Employee employee = employeeRepository.findById(projectDTO.getProjectManager().getId()).orElse(null);
+        employee.getManagedProjects().add(project);
         project.setProjectManager(employee);
         project.setBudget(projectDTO.getBudget());
+        project.getLinkedEmployees().add(employee);
         employee.getProjects().add(project);
 
         return toProjectDTO(projectRepository.save(project));
