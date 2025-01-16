@@ -2,8 +2,11 @@ package api.firstapi.Project;
 
 import api.firstapi.Employee.*;
 import api.firstapi.Task.Task;
+import api.firstapi.Task.TaskDTO;
+import api.firstapi.Task.TaskRepository;
 import api.firstapi.Task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ public class ProjectService {
     private EmployeeService employeeService;
 
     @Autowired
+    @Lazy
     private TaskService taskService;
 
 
@@ -34,6 +38,28 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    public boolean addEmployee(long id, String email){
+        Project project = projectRepository.findById(id).orElse(null);
+        Employee employee = employeeRepository.findByEmail(email).orElse(null);
+        if(employee != null) {
+            project.getLinkedEmployees().add(employee);
+            employee.getProjects().add(project);
+
+            projectRepository.save(project);
+            employeeRepository.save(employee);
+            return true;
+        }
+        return false;
+    }
+
+    public List<ProjectDTO> getProjectDTOById(long id){
+        if(projectRepository.findAllByLinkedEmployees(id).orElse(null) != null) {
+            List<ProjectDTO> projects = toProjectDTO(projectRepository.findAllByLinkedEmployees(id).orElse(null));
+            return projects;
+        }else{
+            return null;
+        }
+    }
 
     public ProjectDTO createProject(ProjectDTO projectDTO) {
         Project project = new Project();
@@ -42,8 +68,10 @@ public class ProjectService {
         project.setStartDate(projectDTO.getStartDate());
         project.setEndDate(projectDTO.getEndDate());
         project.setStatus(false);
-        project.setProjectManager(employeeRepository.findById(projectDTO.getProjectManager().getId()).orElse(null));
+        Employee employee = employeeRepository.findById(projectDTO.getProjectManager().getId()).orElse(null);
+        project.setProjectManager(employee);
         project.setBudget(projectDTO.getBudget());
+        employee.getProjects().add(project);
 
         return toProjectDTO(projectRepository.save(project));
     }

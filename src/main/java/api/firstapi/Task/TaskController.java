@@ -1,5 +1,6 @@
 package api.firstapi.Task;
 
+import api.firstapi.Project.ProjectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -123,4 +124,8 @@ public class TaskController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/{id}/create")
+    public long createTask(@PathVariable long id,@RequestBody TaskDTO taskDTO) {
+        return taskService.createTask(taskDTO,id).getId();
+    }
 }

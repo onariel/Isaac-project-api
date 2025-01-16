@@ -1,6 +1,10 @@
 package api.firstapi.Task;
 
+import api.firstapi.Project.Project;
+import api.firstapi.Project.ProjectDTO;
+import api.firstapi.Project.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,8 +17,26 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    @Lazy
+    private ProjectService projectService;
+
     public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
+    }
+
+    public TaskDTO createTask(TaskDTO taskDTO, long projectId) {
+        Task task = new Task();
+        task.setName(taskDTO.getName());
+        task.setDescription(taskDTO.getDescription());
+        task.setPriority(taskDTO.getPriority());
+        task.setDueDate(taskDTO.getDueDate());
+        task.setStatus(taskDTO.getStatus());
+        Project project = projectService.getProjectById(projectId).orElse(null);
+        task.setProject(project);
+        task.setBudget(taskDTO.getBudget());
+        project.getTasks().add(task);
+        return toDTO(taskRepository.save(task));
     }
 
     public List<Task> getAllTasks() {

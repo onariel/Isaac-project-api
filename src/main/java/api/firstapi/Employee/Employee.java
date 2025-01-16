@@ -34,5 +34,4 @@ public class Employee {
 
     @ManyToMany
     public List<Project> projects;
-
 }

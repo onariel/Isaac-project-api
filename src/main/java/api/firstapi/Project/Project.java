@@ -42,5 +42,4 @@ public class Project {
     public List<Task> tasks;
 
     public float budget;
-
 }

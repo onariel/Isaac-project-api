@@ -1,11 +1,16 @@
 package api.firstapi.Project;
 
+import api.firstapi.Employee.Employee;
+import api.firstapi.Employee.EmployeeDTO;
 import api.firstapi.Project.ProjectDTO;
+import api.firstapi.Task.TaskController;
+import api.firstapi.Task.TaskDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/Project")
@@ -127,8 +132,18 @@ public class ProjectController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/{id}/add")
+    public boolean addEmployee(@PathVariable Long id, @RequestBody String email) {
+        return projectService.addEmployee(id,email);
+    }
+
     @PostMapping("/create")
-    public ProjectDTO createProject(@RequestBody ProjectDTO projectDTO) {
-        return projectService.createProject(projectDTO);
+    public long createProject(@RequestBody ProjectDTO projectDTO) {
+        return projectService.createProject(projectDTO).getId();
+    }
+
+    @GetMapping("/{id}")
+    public List<ProjectDTO> getProject(@PathVariable Long id) {
+        return projectService.getProjectDTOById(id);
     }
 }

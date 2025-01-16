@@ -1,5 +1,7 @@
 package api.firstapi.Project;
 
+import api.firstapi.Employee.Employee;
+import api.firstapi.Employee.EmployeeDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
